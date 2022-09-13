@@ -14,6 +14,10 @@ struct Args {
     size: String,
 }
 
+fn flush() {
+    stdout().flush().expect("Failed to flush stdout");
+}
+
 fn main() {
     let args = Args::parse();
 
@@ -60,14 +64,14 @@ fn main() {
         let mut test_iter = mem_tests.get_iterator();
 
         print!("Test {}: running...", test_iter.next_test_name().unwrap());
-        stdout().flush().expect("Failed to flush stdout");
+        flush();
         while let Some((name, errors)) = test_iter.next() {
             println!("\r\x1B[2KTest {}: {} errors", name, errors);
             error_count += errors;
 
             if let Some(next_test_name) = test_iter.next_test_name() {
                 print!("Test {}: running...", next_test_name);
-                stdout().flush().expect("Failed to flush stdout");
+                flush();
             }
         }
     }
