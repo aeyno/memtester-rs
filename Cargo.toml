@@ -1,6 +1,6 @@
 [package]
 name = "memtester"
-version = "1.0.1"
+version = "1.0.2"
 authors = ["Tom Gouville <tom.gouville@protonmail.com>"]
 description = "A Rust utility to test memory."
 license = "GPL-3.0"
@@ -20,6 +20,6 @@ name = "memtester-rs"
 
 
 [dependencies]
-libmemtester = "1.1"
+libmemtester = "1"
 clap = { version = "3.2.16", features = ["derive"] }
 regex = "1"
