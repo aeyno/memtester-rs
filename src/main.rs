@@ -10,7 +10,7 @@ struct Args {
     #[clap(short, long, default_value_t = 1)]
     cycles: usize,
 
-    /// The memory size to allocate (default in bytes) : eg. 1G, 32M, 128K, ...
+    /// The memory size to allocate (default in bytes, supported units B, K, M, G) : eg. 1G, 32M, 128K, ...
     size: String,
 }
 
@@ -21,7 +21,7 @@ fn flush() {
 fn main() {
     let args = Args::parse();
 
-    let size_regex = Regex::new(r"^(\d+)(\w)$").unwrap();
+    let size_regex = Regex::new(r"^(\d+)(\w)?$").unwrap();
     let cap = size_regex.captures(&args.size);
     if cap.is_none() {
         println!("Invalid size format");
@@ -35,8 +35,13 @@ fn main() {
             return;
         }
     };
-    let unit = &cap[2];
+    let unit = if let Some(u) = cap.get(2) {
+        u.as_str()
+    } else {
+        "B"
+    };
     let allocation_size = match unit {
+        "B" => size,
         "K" => size * 1024,
         "M" => size * 1024 * 1024,
         "G" => size * 1024 * 1024 * 1024,
